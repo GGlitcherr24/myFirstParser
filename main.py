@@ -30,7 +30,7 @@ def AppendGoods(resultNum, numenlature):
                           'FAT': numenlature['items'][i]['fats'],
                           'CARBOHYDRATE': numenlature['items'][i]['carbohydrates'],
                           'PRICE': numenlature['items'][i]['price']})
-
+        print(i)
     return resultNum
 
 def AppendCat(resultCat, category):
@@ -41,13 +41,13 @@ def AppendCat(resultCat, category):
                           'NAME': category['items'][i]['name'],
                           'MEASURE_UNIT': '', 'UNIT_WEIGHT': '', 'ENERGY': '', 'FIBER': '', 'FAT': '',
                           'CARBOHYDRATE': '', 'PRICE': ''})
-        print(i)
+
     return resultCat
 
 
 linkCat = "https://new.moykassir.ru/api/categories?need_hierarchy=true"
 headersNom = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbmV3Lm1veWthc3Npci5ydVwvYXBpXC9hdXRoXC9yZWZyZXNoIiwiaWF0IjoxNzA5MTAwMjk1LCJleHAiOjE3MDkxMDU5MjEsIm5iZiI6MTcwOTEwMjMyMSwianRpIjoienRpbEszaVdROUVlN2ZiYiIsInN1YiI6MzQ2MTUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJlbWFpbCI6Im1tdkBobGNvbXBhbnkucnUifQ.DdMPKiq7waeMSkVH_-ZT_yuy0TG7LjxqUnj5xqux3qc'
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbmV3Lm1veWthc3Npci5ydVwvYXBpXC9hdXRoXC9yZWZyZXNoIiwiaWF0IjoxNzA5MTAwMjk1LCJleHAiOjE3MDkxMDcxNDcsIm5iZiI6MTcwOTEwMzU0NywianRpIjoiVTBBSnprUXZZRnpxN3hCZiIsInN1YiI6MzQ2MTUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJlbWFpbCI6Im1tdkBobGNvbXBhbnkucnUifQ.UbYTodB1tsRcOKrKgyq8GsySRwE7KiTRrTz-3LbjwKI'
 }
 headersCat = {
     'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbmV3Lm1veWthc3Npci5ydVwvYXBpXC9hdXRoXC9yZWZyZXNoIiwiaWF0IjoxNzA5MTAwMjk1LCJleHAiOjE3MDkxMDYyMTksIm5iZiI6MTcwOTEwMjYxOSwianRpIjoiVTNXVmhXOW1OWHdMZHR6dSIsInN1YiI6MzQ2MTUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJlbWFpbCI6Im1tdkBobGNvbXBhbnkucnUifQ.2dVG1jSWtAMaj7h6hJ68t8t-irnBd617NkDfKzyuIdI'
@@ -58,14 +58,14 @@ headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT'
 
 resultNom, resultCat = [], []
 
-# for i in range(1,9):
-#     linkNom = "https://new.moykassir.ru/api/nomenclature?page=" + str(i) + "&limit=50&include_nested_categories=true"
-#     print(linkNom)
-#     nomenclature = GetRequest(linkNom, headersNom).json()
-#     resultNom = AppendGoods(resultNom, nomenclature)
-category = GetRequest(linkCat, headersCat).json()
-print(category['items'][0])
-resultCat = AppendCat(resultCat, category)
+for i in range(1,9):
+    linkNom = "https://new.moykassir.ru/api/nomenclature?page=" + str(i) + "&limit=50&include_nested_categories=true"
+    print(linkNom)
+    nomenclature = GetRequest(linkNom, headersNom).json()
+    resultNom = AppendGoods(resultNom, nomenclature)
+# category = GetRequest(linkCat, headersCat).json()
+# print(category['items'][0])
+# resultCat = AppendCat(resultCat, category)
 
 
 # for i in resultNom:
@@ -75,12 +75,11 @@ resultCat = AppendCat(resultCat, category)
 # print("TEST ______________________")
 # print(nomenclature['items'][1]['name'])
 
-with open("nomenclature.csv", 'a', encoding='utf-8') as file:
-    file_writer = csv.writer(file, delimiter=";", lineterminator="\r")
+#with open("nomenclature.csv", 'a', encoding='utf-8') as file:
+    # file_writer = csv.writer(file, delimiter=";", lineterminator="\r")
     # file_writer.writerow(headlines)
     # for i in resultNom:
     #     file_writer.writerow(i.values())
-    for i in resultCat:
-        file_writer.writerow(i.values())
-
+    # for i in resultCat:
+    #     file_writer.writerow(i.values())
 
