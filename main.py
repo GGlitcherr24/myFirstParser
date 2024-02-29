@@ -12,7 +12,7 @@ headers = {
 headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT', 'ENERGY', 'FIBER', 'FAT', 'CARBOHYDRATE', 'PRICE']
 
 # Заполнение товаров
-def AppendGoods(resultNum, numenlature):
+def AppendGoods(resultNom, numenlature):
     for i in range(0, len(numenlature['items'])):
         match numenlature['items'][i]['type']:
             case 'raw':
@@ -23,7 +23,7 @@ def AppendGoods(resultNum, numenlature):
                 type = 'SERVICE'
             case 'semis':
                 type = 'PREPARED'
-        resultNum.append({'TYPE': type,
+        resultNom.append({'TYPE': type,
                           'NUM': numenlature['items'][i]['id'],
                           'PARENT_CODE': numenlature['items'][i]['category_id'],
                           'NAME': numenlature['items'][i]['name'],
@@ -34,7 +34,7 @@ def AppendGoods(resultNum, numenlature):
                           'FAT': numenlature['items'][i]['fats'],
                           'CARBOHYDRATE': numenlature['items'][i]['carbohydrates'],
                           'PRICE': numenlature['items'][i]['price']})
-    return resultNum
+    return resultNom
 
 #Заполнение категорий
 def AppendCat(resultCat, category):
@@ -43,8 +43,13 @@ def AppendCat(resultCat, category):
                           'NUM': category['items'][i]['id'],
                           'PARENT_CODE': '',
                           'NAME': category['items'][i]['name'],
-                          'MEASURE_UNIT': '', 'UNIT_WEIGHT': '', 'ENERGY': '', 'FIBER': '', 'FAT': '',
-                          'CARBOHYDRATE': '', 'PRICE': ''})
+                          'MEASURE_UNIT': '',
+                          'UNIT_WEIGHT': 0,
+                          'ENERGY': 0,
+                          'FIBER': 0,
+                          'FAT': 0,
+                          'CARBOHYDRATE': 0,
+                          'PRICE': 0})
 
     return resultCat
 
