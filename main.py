@@ -2,7 +2,6 @@ import requests
 import pprint as pp
 import csv
 import sys
-from translate import Translator
 
 import spec
 from spec import main
@@ -10,12 +9,21 @@ from spec import main
 headers = {
     'Authorization': ''
 }
-headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT', 'ENERGY', 'FIBER', 'FAT', 'CARBOHYDRATE', 'PRICE', 'CATEGORY']
+headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT', 'ENERGY', 'FIBER', 'FAT', 'CARBOHYDRATE', 'PRICE']
 
 # Заполнение товаров
 def AppendGoods(resultNum, numenlature):
     for i in range(0, len(numenlature['items'])):
-        resultNum.append({'TYPE': 'GOODS',
+        match numenlature['items'][i]['type']:
+            case 'raw':
+                type = 'GOODS'
+            case 'product' | 'resell':
+                type = 'DISH'
+            case 'service':
+                type = 'SERVICE'
+            case 'semis':
+                type = 'PREPARED'
+        resultNum.append({'TYPE': type,
                           'NUM': numenlature['items'][i]['id'],
                           'PARENT_CODE': numenlature['items'][i]['category_id'],
                           'NAME': numenlature['items'][i]['name'],
@@ -25,9 +33,7 @@ def AppendGoods(resultNum, numenlature):
                           'FIBER': '',
                           'FAT': numenlature['items'][i]['fats'],
                           'CARBOHYDRATE': numenlature['items'][i]['carbohydrates'],
-                          'PRICE': numenlature['items'][i]['price'],
-                          'CATEGORY': numenlature['items'][i]['type']})
-        print(i)
+                          'PRICE': numenlature['items'][i]['price']})
     return resultNum
 
 #Заполнение категорий
@@ -44,8 +50,8 @@ def AppendCat(resultCat, category):
 
 #Запись в файл
 def WriterFile(resultNom, resultCat):
-    with open("nomenclature2.csv", 'w', encoding='utf-8') as file:
-        file_writer = csv.writer(file, delimiter=";", lineterminator="\r")
+    with open("nomenclature.csv", 'w', encoding='utf-8') as file:
+        file_writer = csv.writer(file, delimiter=";", lineterminator="\n")
         file_writer.writerow(headlines)
         for i in resultNom:
             file_writer.writerow(i.values())
@@ -54,12 +60,15 @@ def WriterFile(resultNom, resultCat):
     with open('helpSpec.txt', 'w', encoding='utf-8') as file:
         for i in resultNom:
             file.write(str(i['NUM']) + '\n')
+    print("Номенклатура готова")
 
 
 # Отправка запроса
 def GetRequest(link, headers):
     response = requests.get(link, headers=headers)
-    print(response)
+    if response.status_code > 200:
+        print("Неправильно введен Bearer token")
+        exit()
     return response.json()
 
 def main():
