@@ -2,7 +2,6 @@ import requests
 import pprint as pp
 import csv
 
-
 def GetRequest(link, headers):
     response = requests.get(link, headers=headers)
     print(response)
@@ -25,7 +24,6 @@ def writeFile(resultSpec, headlines):
 
 with open('help.txt', 'r', encoding='utf-8') as file:
     k = file.read().splitlines()
-    print(k[206])
     resultSpec = []
     for i in range(0, len(k)):
         linkSpec = "https://new.moykassir.ru/api/nomenclature/ingredients/" + k[i]
