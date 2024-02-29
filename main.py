@@ -2,7 +2,11 @@ import requests
 import pprint as pp
 import csv
 import sys
-import main from spec
+from translate import Translator
+
+import spec
+from spec import main
+
 headers = {
     'Authorization': ''
 }
@@ -79,6 +83,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         headers['Authorization'] = 'Bearer ' + sys.argv[1]
     main()
+    spec.main(headers['Authorization'])
 
 
 
