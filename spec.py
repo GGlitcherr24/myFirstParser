@@ -39,8 +39,9 @@ def GetArticles():
 def AppendSpec(resultSpec, k):
     for i in range(0, len(k)):
         linkSpec = "https://new.moykassir.ru/api/nomenclature/ingredients/" + k[i]
-        print(str(int(i / len(k) * 100)) + "%")
         Spec = GetRequest(linkSpec, headers).json()
+        Date = Spec['consists']['date_from']
+        Date = Date[:-6]
         for j in range(0, len(Spec['consists']['ingredients'])):
             if Spec['consists']['ingredients'][j]['weightOnBase'] is None or Spec['consists']['ingredients'][j][
                 'weightOneOnBase'] is None:
@@ -59,11 +60,12 @@ def AppendSpec(resultSpec, k):
                                'ITEM_OUT_WEIGHT': Weight,
                                'TECHNOLOGY': Tech,
                                'AMOUNT': '',
-                               'DATE_FROM': Spec['consists']['date_from'],
+                               'DATE_FROM': Date,
                                'WRITEOFF_TYPE': ''})
             writeFile(resultSpec, headlines)
 
 
 def main(header):
     headers['Authorization'] = header
+    print("Подготовка файла спецификации")
     GetArticles()
