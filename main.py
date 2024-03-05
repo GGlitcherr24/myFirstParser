@@ -9,15 +9,15 @@ from spec import main
 headers = {
     'Authorization': ''
 }
-headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT', 'ENERGY', 'FIBER', 'FAT', 'CARBOHYDRATE', 'PRICE']
+headlines = ['TYPE', 'NUM', 'PARENT_CODE', 'NAME', 'MEASURE_UNIT', 'UNIT_WEIGHT', 'ENERGY', 'FIBER', 'FAT', 'CARBOHYDRATE', 'PRICE', 'COST_PRICE']
 
 # Заполнение товаров
 def AppendGoods(resultNom, numenlature):
     for i in range(0, len(numenlature['items'])):
         match numenlature['items'][i]['type']:
-            case 'raw':
+            case 'raw' | 'resell':
                 type = 'GOODS'
-            case 'product' | 'resell':
+            case 'product':
                 type = 'DISH'
             case 'service':
                 type = 'SERVICE'
@@ -33,7 +33,8 @@ def AppendGoods(resultNom, numenlature):
                           'FIBER': '',
                           'FAT': numenlature['items'][i]['fats'],
                           'CARBOHYDRATE': numenlature['items'][i]['carbohydrates'],
-                          'PRICE': numenlature['items'][i]['price']})
+                          'PRICE': numenlature['items'][i]['price'],
+                          'COST_PRICE': numenlature['items'][i]['acc_price_by_enter']})
     return resultNom
 
 #Заполнение категорий
